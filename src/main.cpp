@@ -490,40 +490,40 @@ void send_read_command(LibSerial::SerialPort &serial_port, const uint16_t device
 }
 
 
-int main() {
-    using LibSerial::SerialPort;
+// int main() {
+//     using LibSerial::SerialPort;
 
-    SerialPort      serial_port;
+//     SerialPort      serial_port;
 
-    // Open serial ports
-    serial_port.Open( "/dev/ttyUSB0" );
+//     // Open serial ports
+//     serial_port.Open( "/dev/ttyUSB0" );
 
-    using namespace LibSerial;
-    serial_port.SetBaudRate( BaudRate::BAUD_115200 );
-    serial_port.SetCharacterSize(CharacterSize::CHAR_SIZE_8);
-    serial_port.SetFlowControl(FlowControl::FLOW_CONTROL_NONE);
-    serial_port.SetParity(Parity::PARITY_NONE);
-    serial_port.SetStopBits(StopBits::STOP_BITS_1);
+//     using namespace LibSerial;
+//     serial_port.SetBaudRate( BaudRate::BAUD_115200 );
+//     serial_port.SetCharacterSize(CharacterSize::CHAR_SIZE_8);
+//     serial_port.SetFlowControl(FlowControl::FLOW_CONTROL_NONE);
+//     serial_port.SetParity(Parity::PARITY_NONE);
+//     serial_port.SetStopBits(StopBits::STOP_BITS_1);
 
-    serial_port.FlushIOBuffers();
+//     serial_port.FlushIOBuffers();
 
-    std::unordered_map<std::string, std::string> config {};
-    for (auto const &el: CONFIG_REGISTERS) {
-        config = read_config(serial_port, 0x50, el.first);
-        for (auto const &el: config) {
-            std::cout << el.first << ": " << el.second << std::endl;
-        }
-    }
-
-
-    std::thread serial_sender(send_read_command, std::ref(serial_port), 0x50);
-    std::thread serial_reader(read_data, std::ref(serial_port), 0x50);
-
-    serial_sender.join();
-    serial_reader.join();
+//     std::unordered_map<std::string, std::string> config {};
+//     for (auto const &el: CONFIG_REGISTERS) {
+//         config = read_config(serial_port, 0x50, el.first);
+//         for (auto const &el: config) {
+//             std::cout << el.first << ": " << el.second << std::endl;
+//         }
+//     }
 
 
-    serial_port.Close();
+//     std::thread serial_sender(send_read_command, std::ref(serial_port), 0x50);
+//     std::thread serial_reader(read_data, std::ref(serial_port), 0x50);
 
-    return 0;
-}
+//     serial_sender.join();
+//     serial_reader.join();
+
+
+//     serial_port.Close();
+
+//     return 0;
+// }
