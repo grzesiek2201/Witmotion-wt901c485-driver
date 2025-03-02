@@ -351,14 +351,6 @@ std::unordered_map<std::string, std::string> read_config(LibSerial::SerialPort &
 }
 
 
-void send_read_command(LibSerial::SerialPort &serial_port, const uint16_t device_addr) {
-    while (true) {
-        readReg(serial_port, device_addr, 0x34, 13);
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
-    }
-}
-
-
 int16_t getSignInt16(uint16_t num) {
     if (num >= pow(2, 15)) {
         num -= pow(2, 16);
@@ -423,17 +415,18 @@ std::unordered_map<std::string, double> processData(const std::vector<uint8_t>& 
 }
 
 
-std::vector<uint8_t> read_buffer;
 
 void read_data(LibSerial::SerialPort &serial_port, const uint16_t ADDR) {
     constexpr size_t kTimeoutMs = 1;
     constexpr size_t kHeaderSize = 5;
     constexpr size_t kCrcSize = 2;
     const size_t kMinBufferSize = kHeaderSize + kCrcSize;
-
+    
+    std::vector<uint8_t> read_buffer;
     std::vector<uint8_t> buffer;
 
     while (true) {
+        // std::this_thread::sleep_for(std::chrono::milliseconds(10));
         size_t bytes_available = serial_port.GetNumberOfBytesAvailable();
         if (bytes_available >= 13 * 2 + kHeaderSize) {
             std::cout << "Reading " << bytes_available << " bytes\n";
@@ -484,6 +477,15 @@ void read_data(LibSerial::SerialPort &serial_port, const uint16_t ADDR) {
             }
         }
 
+    }
+}
+
+
+
+void send_read_command(LibSerial::SerialPort &serial_port, const uint16_t device_addr) {
+    while (true) {
+        readReg(serial_port, device_addr, 0x34, 13);
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 }
 

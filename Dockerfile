@@ -13,5 +13,7 @@ COPY . .
 
 RUN ./complie.sh
 
-# CMD [ "./build/wt901c485_cpp" ]
-CMD [ "/bin/bash " ]
+RUN chmod +x ./build/wt901c485_cpp
+
+CMD [ "/app/build/wt901c485_cpp" ]
+# CMD [ "/bin/bash " ]

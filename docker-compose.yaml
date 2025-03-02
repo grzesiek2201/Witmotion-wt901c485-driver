@@ -1,8 +1,8 @@
 services:
   witmotion-driver:
     build: .
-    container_name: witmotion-driver
-    volumes:
-     - ./:/app
+    # container_name: witmotion-driver
+    # volumes:
+    #  - ./:/app
     devices:
      - /dev/ttyUSB0:/dev/ttyUSB0
